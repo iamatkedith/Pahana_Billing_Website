@@ -190,11 +190,11 @@
 
                     <!-- Admin menu -->
                     <c:if test="${sessionScope.role == 'admin'}">
-                        <li><a href="admin/books.jsp"><i class="fa-solid fa-book"></i> Books</a></li>
-                        <li><a href="admin/customers.jsp"><i class="fa-solid fa-users"></i> Customers</a></li>
-                        <li><a href="admin/cashiers.jsp"><i class="fa-solid fa-user-tie"></i> Cashiers</a></li>
-                        <li><a href="admin/reports.jsp"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
-                        <li><a href="admin/settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                        <li><a href="books.jsp"><i class="fa-solid fa-book"></i> Books</a></li>
+                        <li><a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a></li>
+                        <li><a href="cashiers.jsp"><i class="fa-solid fa-user-tie"></i> Cashiers</a></li>
+                        <li><a href="reports.jsp"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
+                        <li><a href="settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
                         </c:if>
 
                     <!-- Cashier menu -->
