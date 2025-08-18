@@ -91,6 +91,91 @@
         .logout-btn:hover {
             background: #005fa3;
         }
+        /* Logout Modal Overlay */
+            .logout-modal-overlay {
+                display: none;
+                position: fixed;
+                z-index: 999;
+                left: 0; top: 0;
+                width: 100vw;
+                height: 100vh;
+                background-color: rgba(0, 0, 0, 0.4);
+                justify-content: center;
+                align-items: center;
+                animation: fadeIn 0.3s ease-in-out;
+            }
+
+            /* Modal Box */
+            .logout-modal-content {
+                background-color: #fff;
+                padding: 30px 35px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                text-align: center;
+                width: 400px;
+                animation: slideUp 0.3s ease-in-out;
+            }
+
+            /* Heading and Message */
+            .logout-modal-content h2 {
+                margin-top: 0;
+                font-size: 24px;
+                color: #333;
+            }
+
+            .logout-modal-content p {
+                margin: 15px 0 25px;
+                color: #555;
+            }
+
+            /* Buttons */
+            .logout-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .logout-confirm {
+                background-color: #d9534f;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background 0.3s;
+            }
+
+            .logout-confirm:hover {
+                background-color: #c9302c;
+            }
+
+            .logout-cancel {
+                background-color: #6c757d;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: background 0.3s;
+            }
+
+            .logout-cancel:hover {
+                background-color: #5a6268;
+            }
+
+            /* Animations */
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            @keyframes slideUp {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+
     </style>
 </head>
 <body>
@@ -126,10 +211,37 @@
             <div class="right-side">
                 <c:if test="${not empty sessionScope.username}">
                     <span class="welcome">Welcome, <strong>${sessionScope.username}</strong></span>
-                    <a href="logout.jsp" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    <a href="#" class="logout-btn" onclick="showLogoutModal()"><i class="fas fa-sign-out-alt"></i> Logout</a>
                 </c:if>
             </div>
+            
         </div>
     </nav>
+     <!-- Logout Confirmation Modal -->
+        <div id="logoutModal" class="logout-modal-overlay">
+            <div class="logout-modal-content">
+                <h2>Confirm Logout</h2>
+                <p>Are you sure you want to log out?</p>
+                <div class="logout-buttons">
+                    <button onclick="confirmLogout()" class="logout-confirm">Yes, Logout</button>
+                    <button onclick="closeLogoutModal()" class="logout-cancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            function showLogoutModal() {
+                document.getElementById("logoutModal").style.display = "flex";
+            }
+
+            function closeLogoutModal() {
+                document.getElementById("logoutModal").style.display = "none";
+            }
+
+            function confirmLogout() {
+                window.location.href = "login.jsp?logout=1";
+            }
+        </script>
 </body>
 </html>
