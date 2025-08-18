@@ -3,13 +3,13 @@
 <%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Customer Management | Admin</title>
-    <!-- Bootstrap & FontAwesome CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-     <style>
+    <head>
+        <meta charset="UTF-8">
+        <title>Customer Management | Admin</title>
+        <!-- Bootstrap & FontAwesome CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <style>
             body { 
                 font-family: 'Segoe UI', sans-serif; 
                 background: #f5f7fa; 
@@ -100,101 +100,168 @@
                 background: #6610f2; 
             }
         </style>
-</head>
-<body>
-<div class="container-main">
-    <c:if test="${not empty param.success}">
-        <div class="alert alert-success">${param.success}</div>
-    </c:if>
-    <c:if test="${not empty param.error}">
-        <div class="alert alert-danger">${param.error}</div>
-    </c:if>
+    </head>
+    <body>
+        <div class="container-main">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Customers</h2>
-        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
-            <i class="fas fa-plus"></i> Add Customer
-        </button>
-    </div>
+            <!-- Success / Error Messages -->
+            <c:if test="${not empty param.success}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-success">
+                    ${param.success}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </c:if>
+            <c:if test="${not empty param.error}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-error">
+                    ${param.error}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            </c:if>
 
-    <div class="table-wrapper">
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                    try {
-                        Class.forName("com.mysql.cj.jdbc.Driver");
-                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing","root","");
-                        PreparedStatement ps = con.prepareStatement("SELECT * FROM customers");
-                        ResultSet rs = ps.executeQuery();
-                        while(rs.next()){
-                %>
-                <tr>
-                    <td><%= rs.getInt("id") %></td>
-                    <td><%= rs.getString("name") %></td>
-                    <td><%= rs.getString("email") %></td>
-                    <td><%= rs.getString("phone") %></td>
-                    <td>
-                        <a href="<%=request.getContextPath()%>/admin/UpdateCustomerServlet?id=<%=rs.getInt("id")%>" class="btn-icon btn-edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <button class="btn-icon btn-delete" onclick="confirmDelete(<%= rs.getInt("id") %>)">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-                <%
-                        }
-                        rs.close();
-                        ps.close();
-                        con.close();
-                    } catch(Exception e) {
-                        out.println("<tr><td colspan='5' class='text-danger'>Error fetching customers!</td></tr>");
-                    }
-                %>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Add Customer Modal -->
-    <div class="modal fade" id="addCustomerModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form action="<%=request.getContextPath()%>/admin/AddCustomerServlet" method="post">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add New Customer</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-6"><label class="form-label">Name</label><input type="text" name="name" class="form-control" required></div>
-                            <div class="col-md-6"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
-                            <div class="col-md-6"><label class="form-label">Phone</label><input type="text" name="phone" class="form-control"></div>
-                            <div class="col-md-6"><label class="form-label">Address</label><input type="text" name="address" class="form-control"></div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Customer</button>
-                    </div>
-                </form>
+            <!-- Header + Add Button -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Customers</h2>
+                <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
+                    <i class="fas fa-plus"></i> Add Customer
+                </button>
             </div>
+
+            <!-- Customers Table -->
+            <div class="table-wrapper">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <%
+                            try {
+                                Class.forName("com.mysql.cj.jdbc.Driver");
+                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                                PreparedStatement ps = con.prepareStatement("SELECT * FROM customers");
+                                ResultSet rs = ps.executeQuery();
+                                while (rs.next()) {
+                        %>
+                        <tr>
+                            <td><%= rs.getInt("id")%></td>
+                            <td><%= rs.getString("name")%></td>
+                            <td><%= rs.getString("email")%></td>
+                            <td><%= rs.getString("phone")%></td>
+                            <td>
+                                <a href="javascript:void(0);" class="btn-icon btn-edit" 
+                                   onclick="openEditCustomerModal(
+                                                   '<%=rs.getInt("id")%>',
+                                                   '<%=rs.getString("name")%>',
+                                                   '<%=rs.getString("email")%>',
+                                                   '<%=rs.getString("phone")%>',
+                                                   '<%=rs.getString("address")%>'
+                                                   )">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn-icon btn-delete" onclick="confirmDelete(<%= rs.getInt("id")%>)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <%
+                                }
+                                rs.close();
+                                ps.close();
+                                con.close();
+                            } catch (Exception e) {
+                                out.println("<tr><td colspan='5' class='text-danger'>Error fetching customers!</td></tr>");
+                            }
+                        %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Customer Modal -->
+            <div class="modal fade" id="addCustomerModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form action="<%=request.getContextPath()%>/admin/AddCustomerServlet" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Add New Customer</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6"><label class="form-label">Name</label><input type="text" name="name" class="form-control" required></div>
+                                    <div class="col-md-6"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
+                                    <div class="col-md-6"><label class="form-label">Phone</label><input type="text" name="phone" class="form-control"></div>
+                                    <div class="col-md-6"><label class="form-label">Address</label><input type="text" name="address" class="form-control"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Add Customer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Customer Modal -->
+            <div class="modal fade" id="editCustomerModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form id="editCustomerForm" action="<%=request.getContextPath()%>/admin/UpdateCustomerServlet" method="post">
+                            <input type="hidden" name="id" id="editCustomerId">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edit Customer</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6"><label class="form-label">Name</label><input type="text" name="name" id="editCustomerName" class="form-control" required></div>
+                                    <div class="col-md-6"><label class="form-label">Email</label><input type="email" name="email" id="editCustomerEmail" class="form-control" required></div>
+                                    <div class="col-md-6"><label class="form-label">Phone</label><input type="text" name="phone" id="editCustomerPhone" class="form-control"></div>
+                                    <div class="col-md-6"><label class="form-label">Address</label><input type="text" name="address" id="editCustomerAddress" class="form-control"></div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Update Customer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-</div>
+        <script>
+            function confirmDelete(customerId) {
+                if (confirm("Are you sure you want to delete this customer?")) {
+                    window.location.href = "<%=request.getContextPath()%>/admin/DeleteCustomerServlet?id=" + customerId;
+                }
+            }
 
-<script>
-    function confirmDelete(customerId){
-        if(confirm("Are you sure you want to delete this customer?")){
-            window.location.href = "<%=request.getContextPath()%>/admin/DeleteCustomerServlet?id=" + customerId;
-        }
-    }
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+            function openEditCustomerModal(id, name, email, phone, address) {
+                document.getElementById('editCustomerId').value = id;
+                document.getElementById('editCustomerName').value = name;
+                document.getElementById('editCustomerEmail').value = email;
+                document.getElementById('editCustomerPhone').value = phone;
+                document.getElementById('editCustomerAddress').value = address;
+
+                var editModal = new bootstrap.Modal(document.getElementById('editCustomerModal'));
+                editModal.show();
+            }
+
+            // Auto-dismiss alerts after 3 seconds
+            setTimeout(function () {
+                var successAlert = document.getElementById('alert-success');
+                if (successAlert)
+                    successAlert.style.display = 'none';
+                var errorAlert = document.getElementById('alert-error');
+                if (errorAlert)
+                    errorAlert.style.display = 'none';
+            }, 3000);
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
 </html>
