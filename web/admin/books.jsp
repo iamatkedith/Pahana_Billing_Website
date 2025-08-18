@@ -76,8 +76,8 @@
             }
             .btn-edit {
                 color: #198754; 
-            } .
-            btn-edit:hover 
+            } 
+            .btn-edit:hover 
             {
                 color: #157347;
             }

@@ -247,7 +247,9 @@
             }
 
             function confirmLogout() {
-                window.location.href = "login.jsp?logout=1";
+                // Ensure we include the context path
+                var contextPath = '<%= request.getContextPath() %>';
+                window.location.href = contextPath + "/login.jsp?logout=1";
             }
         </script>
     </body>
