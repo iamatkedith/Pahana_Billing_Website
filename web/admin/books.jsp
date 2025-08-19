@@ -184,7 +184,7 @@
             <div class="modal fade" id="addBookModal" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <form action="<%=request.getContextPath()%>/AddBookServlet" method="post">
+                        <form action="<%=request.getContextPath()%>/admin/AddBookServlet" method="post">
                             <div class="modal-header">
                                 <h5 class="modal-title">Add New Book</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
