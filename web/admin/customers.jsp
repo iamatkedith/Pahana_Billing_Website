@@ -139,7 +139,7 @@
                         <%
                             try {
                                 Class.forName("com.mysql.cj.jdbc.Driver");
-                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
                                 PreparedStatement ps = con.prepareStatement("SELECT * FROM customers");
                                 ResultSet rs = ps.executeQuery();
                                 while (rs.next()) {

@@ -33,7 +33,7 @@ public class AddBookServlet extends HttpServlet {
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
             String sql = "INSERT INTO books(isbn,title,author,publisher,year,edition,stock,price,discount) VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, isbn);

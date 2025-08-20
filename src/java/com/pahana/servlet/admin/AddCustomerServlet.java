@@ -28,7 +28,7 @@ public class AddCustomerServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                "jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
 
             String sql = "INSERT INTO customers (name, email, phone, address) VALUES (?, ?, ?, ?)";
             PreparedStatement ps = con.prepareStatement(sql);

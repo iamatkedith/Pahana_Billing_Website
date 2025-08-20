@@ -31,7 +31,7 @@ public class DeleteBookServlet extends HttpServlet {
             int id = Integer.parseInt(idParam);
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "")) {
+            try (Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "")) {
                 String sql = "DELETE FROM books WHERE id=?";
                 PreparedStatement ps = con.prepareStatement(sql);
                 ps.setInt(1, id);

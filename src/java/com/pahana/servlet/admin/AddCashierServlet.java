@@ -28,7 +28,7 @@ public class AddCashierServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                "jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
 
             String sql = "INSERT INTO cashiers(name,email,phone,username,password) VALUES(?,?,?,?,?)";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -36,7 +36,7 @@ public class AddCashierServlet extends HttpServlet {
             ps.setString(2, email);
             ps.setString(3, phone);
             ps.setString(4, username);
-            ps.setString(5, password); // hash password if needed
+            ps.setString(5, password); 
 
             int result = ps.executeUpdate();
             ps.close();

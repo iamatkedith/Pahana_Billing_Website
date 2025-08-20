@@ -22,7 +22,7 @@ public class FeedbackServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     // TODO: Replace with your DB details
-    private String jdbcURL = "jdbc:mysql://localhost:3306/pahana_billing";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/pahana_billing1";
     private String jdbcUsername = "root";
     private String jdbcPassword = "";
 

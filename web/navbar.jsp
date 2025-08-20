@@ -210,7 +210,7 @@
                     <!-- Customer menu -->
                     <c:if test="${sessionScope.role == 'customer'}">
                         <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
-                        <li><a href="<%= request.getContextPath() %>/customer/AvailableBooksServlet"><i class="fa-solid fa-store"></i> Shop Books</a></li>
+                        <li><a href="bookPurchase.jsp"><i class="fa-solid fa-store"></i> Shop Books</a></li>
                         <li><a href="customer/orders.jsp"><i class="fa-solid fa-bag-shopping"></i> My Orders</a></li>
                         <li><a href="customer/downloadReports.jsp"><i class="fa-solid fa-download"></i> Reports</a></li>
                         <li><a href="customer/help.jsp"><i class="fa-solid fa-circle-question"></i> Help</a></li>

@@ -14,7 +14,7 @@ public class DBConnection {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/pahana_billing", 
+                "jdbc:mysql://localhost:3306/pahana_billing1", 
                 "root",
                 ""      
             );

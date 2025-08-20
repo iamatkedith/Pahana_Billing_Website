@@ -44,7 +44,7 @@ public class SaveBillServlet extends HttpServlet {
             JSONArray cartItems = data.getJSONArray("cartItems");
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "")) {
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "")) {
 
                 conn.setAutoCommit(false);
 

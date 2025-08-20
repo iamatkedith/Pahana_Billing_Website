@@ -14,7 +14,7 @@
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
 
         // Get invoice header
         ps = conn.prepareStatement("SELECT * FROM invoices WHERE invoice_id = ?");

@@ -25,7 +25,7 @@ public class DeleteCustomerServlet extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                "jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
             
             PreparedStatement ps = con.prepareStatement("DELETE FROM customers WHERE id=?");
             ps.setInt(1, id);

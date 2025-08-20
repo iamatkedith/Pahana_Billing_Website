@@ -19,7 +19,7 @@ import org.json.JSONObject;
 public class BillingServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    private final String DB_URL = "jdbc:mysql://localhost:3306/pahana_billing";
+    private final String DB_URL = "jdbc:mysql://localhost:3306/pahana_billing1";
     private final String DB_USER = "root";
     private final String DB_PASS = "";
 

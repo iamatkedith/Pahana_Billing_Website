@@ -88,7 +88,7 @@
             <%
                 try {
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
                     Statement stmt = conn.createStatement();
                     ResultSet rs = stmt.executeQuery("SELECT isbn, title, price FROM books");
                     while(rs.next()) {

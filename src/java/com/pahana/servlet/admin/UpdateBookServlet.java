@@ -69,7 +69,7 @@ public class UpdateBookServlet extends HttpServlet {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/pahana_billing", "root", "");
+                    "jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
             String sql = "UPDATE books SET isbn=?, title=?, author=?, publisher=?, year=?, edition=?, stock=?, price=?, discount=? WHERE id=?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, isbn);
