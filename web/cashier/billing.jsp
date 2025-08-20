@@ -1,3 +1,4 @@
+
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../navbar.jsp" %>
@@ -9,7 +10,7 @@
     <style>
         * { box-sizing: border-box; } 
         .billing-wrapper { 
-            padding: 30px 40px 50px 40px;  
+            padding: 30px 40px 50px 40px; 
         } 
         .billing-container { 
             display: flex; gap: 20px; 

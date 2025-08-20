@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +16,7 @@ import org.json.JSONObject;
 
 @WebServlet("/servlet/cashier/SaveBillServlet")
 public class SaveBillServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -66,37 +68,41 @@ public class SaveBillServlet extends HttpServlet {
                 psInvoice.close();
 
                 // Insert invoice items (details)
-                String insertItemSQL = "INSERT INTO invoice_items(invoice_id, isbn, title, price, quantity, subtotal) VALUES(?,?,?,?,?,?)";
+                String insertItemSQL = "INSERT INTO invoice_items(invoice_id, title, price, quantity, subtotal) VALUES(?,?,?,?,?)";
                 PreparedStatement psItem = conn.prepareStatement(insertItemSQL);
                 for (int i = 0; i < cartItems.length(); i++) {
                     JSONObject item = cartItems.getJSONObject(i);
-                    psItem.setInt(1, invoiceId);
-                    psItem.setString(2, item.optString("isbn", "")); // optional ISBN
-                    psItem.setString(3, item.getString("name"));
-                    psItem.setDouble(4, item.getDouble("price"));
-                    psItem.setInt(5, item.getInt("qty"));
-                    psItem.setDouble(6, item.getInt("qty") * item.getDouble("price"));
+                    psItem.setInt(1, invoiceId);                      // invoice_id
+                    psItem.setString(2, item.getString("name"));      // title
+                    psItem.setDouble(3, item.getDouble("price"));     // price
+                    psItem.setInt(4, item.getInt("qty"));            // quantity
+                    psItem.setDouble(5, item.getInt("qty") * item.getDouble("price")); // subtotal
                     psItem.addBatch();
-                }
-                psItem.executeBatch();
-                psItem.close();
-
-                conn.commit();
-
-                // Return success JSON with invoice redirect
-                JSONObject json = new JSONObject();
-                json.put("status", "success");
-                json.put("redirect", "../cashier/invoice_preview.jsp?invoice_id=" + invoiceId);
-                out.print(json.toString());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                out.print("{\"status\":\"error\",\"message\":\"DB Error: " + e.getMessage() + "\"}");
+                
             }
+            psItem.executeBatch();
+            psItem.close();
+
+            conn.commit();
+
+            // Return success JSON with invoice redirect
+            JSONObject json = new JSONObject();
+            json.put("status", "success");
+            json.put("redirect", "../cashier/invoice_preview.jsp?invoice_id=" + invoiceId);
+            out.print(json.toString());
 
         } catch (Exception e) {
             e.printStackTrace();
-            out.print("{\"status\":\"error\",\"message\":\"JSON Parse Error\"}");
+            out.print("{\"status\":\"error\",\"message\":\"DB Error: " + e.getMessage() + "\"}");
         }
+
     }
+    catch (Exception e
+
+    
+        ) {
+            e.printStackTrace();
+        out.print("{\"status\":\"error\",\"message\":\"JSON Parse Error\"}");
+    }
+}
 }

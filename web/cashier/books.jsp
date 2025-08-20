@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../navbar.jsp" %>
 <%@ page import="java.sql.*" %>
@@ -6,7 +5,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Books Management | Cashier</title>
+        <title>Books Management | Admin</title>
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,7 +15,7 @@
         <style>
             body { 
                 font-family: 'Segoe UI', sans-serif; 
-                 background: #f2f7fa; 
+                background: #f5f7fa; 
                 margin: 0; 
             }
             .container-main { 
@@ -40,35 +39,67 @@
                 background: linear-gradient(90deg, #6610f2, #0d6efd); 
                 color: #fff;
             }
-            .table-wrapper {
-                background: #fff; 
-                padding: 1.5rem; 
-                border-radius: 12px; 
-                box-shadow: 0 6px 20px rgba(0,0,0,0.08); 
-                overflow-x: auto; 
+            .admin-books-table th, .admin-books-table td {
+                padding: 0.8rem 0.6rem;
+                text-align: center;
+                vertical-align: middle;
             }
-            table { 
-                width: 100%; 
-                border-collapse: separate; 
-                border-spacing: 0 0.5rem; 
+
+            /* Column widths */
+            .admin-books-table th.col-id,
+            .admin-books-table td.col-id {
+                width: 4%;
             }
-            table th {
-                background: #6610f2; 
-                color: #fff; 
-                font-weight: 600; 
-                border: none; 
-                padding: 0.8rem; 
-                text-align: center; 
+            .admin-books-table th.col-isbn,
+            .admin-books-table td.col-isbn {
+                width: 10%;
             }
-            table td { 
-                background: #f8f9fa; 
-                border: none; 
-                padding: 0.7rem; 
-                text-align: center; 
-                vertical-align: middle; 
+            .admin-books-table th.col-title,
+            .admin-books-table td.col-title {
+                width: 18%;
+                text-align: left;
+                padding-left: 1rem;
             }
-            table tr:hover td { 
-                background: #e2e6ff; 
+            .admin-books-table th.col-author,
+            .admin-books-table td.col-author {
+                width: 12%;
+                text-align: left;
+                padding-left: 1rem;
+            }
+            .admin-books-table th.col-publisher,
+            .admin-books-table td.col-publisher {
+                width: 12%;
+                text-align: left;
+                padding-left: 1rem;
+            }
+            .admin-books-table th.col-year,
+            .admin-books-table td.col-year {
+                width: 6%;
+            }
+            .admin-books-table th.col-edition,
+            .admin-books-table td.col-edition {
+                width: 6%;
+            }
+            .admin-books-table th.col-price,
+            .admin-books-table td.col-price {
+                width: 8%;
+            }
+            .admin-books-table th.col-discount,
+            .admin-books-table td.col-discount {
+                width: 6%;
+            }
+            .admin-books-table th.col-stock,
+            .admin-books-table td.col-stock {
+                width: 6%;
+            }
+            .admin-books-table th.col-actions,
+            .admin-books-table td.col-actions {
+                width: 6%;
+            }
+
+            
+            .admin-books-table tbody tr:hover td {
+                background-color: #e2e6ff;
             }
             .btn-icon { 
                 font-size: 1.1rem; 
@@ -106,9 +137,9 @@
         </style>
     </head>
     <body>
-        
+
         <div class="container-main">
-            
+
             <!-- Success / Error Messages -->
             <c:if test="${not empty param.success}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-success">
@@ -132,12 +163,22 @@
             </div>
 
             <!-- Books Table -->
+
             <div class="table-wrapper">
-                <table class="table table-hover align-middle">
+                <table class="table table-hover align-middle admin-books-table">
                     <thead>
                         <tr>
-                            <th>ID</th><th>ISBN</th><th>Title</th><th>Author</th><th>Publisher</th>
-                            <th>Year</th><th>Edition</th><th>Price</th><th>Discount</th><th>Stock</th><th>Actions</th>
+                            <th class="col-id">ID</th>
+                            <th class="col-isbn">ISBN</th>
+                            <th class="col-title">Title</th>
+                            <th class="col-author">Author</th>
+                            <th class="col-publisher">Publisher</th>
+                            <th class="col-year">Year</th>
+                            <th class="col-edition">Edition</th>
+                            <th class="col-price">Price</th>
+                            <th class="col-discount">Discount</th>
+                            <th class="col-stock">Stock</th>
+                            <th class="col-actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -157,7 +198,7 @@
                             <td><%= rs.getString("publisher")%></td>
                             <td><%= rs.getInt("year")%></td>
                             <td><%= rs.getString("edition")%></td>
-                            <td>LKR<%= rs.getDouble("price")%></td>
+                            <td>$<%= rs.getDouble("price")%></td>
                             <td><%= rs.getDouble("discount")%>%</td>
                             <td><%= rs.getInt("stock")%></td>
                             <td>

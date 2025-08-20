@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 @WebServlet("/BillingServlet")
 public class BillingServlet extends HttpServlet {
+
     private static final long serialVersionUID = 1L;
 
     private final String DB_URL = "jdbc:mysql://localhost:3306/pahana_billing1";
@@ -30,21 +32,23 @@ public class BillingServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        if("search".equals(action)) {
+        if ("search".equals(action)) {
             String query = request.getParameter("query");
             List<Map<String, Object>> books = new ArrayList<>();
-            try(Connection conn = getConnection()) {
+            try (Connection conn = getConnection()) {
                 PreparedStatement ps = conn.prepareStatement("SELECT isbn,title,price FROM books WHERE title LIKE ?");
                 ps.setString(1, "%" + query + "%");
                 ResultSet rs = ps.executeQuery();
-                while(rs.next()) {
-                    Map<String,Object> b = new HashMap<>();
+                while (rs.next()) {
+                    Map<String, Object> b = new HashMap<>();
                     b.put("isbn", rs.getString("isbn"));
                     b.put("title", rs.getString("title"));
                     b.put("price", rs.getDouble("price"));
                     books.add(b);
                 }
-            } catch(Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             response.setContentType("application/json");
             response.getWriter().write(new JSONArray(books).toString());
         }
@@ -54,7 +58,9 @@ public class BillingServlet extends HttpServlet {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = request.getReader();
         String line;
-        while((line=reader.readLine())!=null) sb.append(line);
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
         JSONObject json = new JSONObject(sb.toString());
 
         String customerName = json.getString("customerName");
@@ -63,16 +69,18 @@ public class BillingServlet extends HttpServlet {
         JSONArray cart = json.getJSONArray("cart");
 
         double total = 0;
-        for(int i=0;i<cart.length();i++) total += cart.getJSONObject(i).getDouble("subtotal");
+        for (int i = 0; i < cart.length(); i++) {
+            total += cart.getJSONObject(i).getDouble("subtotal");
+        }
         double balance = paid - total;
         int invoiceId = 0;
 
-        try(Connection conn = getConnection()) {
+        try (Connection conn = getConnection()) {
             conn.setAutoCommit(false);
 
             PreparedStatement psInvoice = conn.prepareStatement(
-                "INSERT INTO invoices(customer_name, customer_phone, total, payment, balance) VALUES(?,?,?,?,?)",
-                Statement.RETURN_GENERATED_KEYS);
+                    "INSERT INTO invoices(customer_name, customer_phone, total, payment, balance) VALUES(?,?,?,?,?)",
+                    Statement.RETURN_GENERATED_KEYS);
             psInvoice.setString(1, customerName);
             psInvoice.setString(2, customerPhone);
             psInvoice.setDouble(3, total);
@@ -81,23 +89,26 @@ public class BillingServlet extends HttpServlet {
             psInvoice.executeUpdate();
 
             ResultSet rs = psInvoice.getGeneratedKeys();
-            if(rs.next()) invoiceId = rs.getInt(1);
+            if (rs.next()) {
+                invoiceId = rs.getInt(1);
+            }
 
             PreparedStatement psItem = conn.prepareStatement(
-                "INSERT INTO invoice_items(invoice_id, isbn, title, price, quantity, subtotal) VALUES(?,?,?,?,?,?)");
-            for(int i=0;i<cart.length();i++) {
+                    "INSERT INTO invoice_items(invoice_id, title, price, quantity, subtotal) VALUES(?,?,?,?,?)");
+            for (int i = 0; i < cart.length(); i++) {
                 JSONObject b = cart.getJSONObject(i);
-                psItem.setInt(1, invoiceId);
-                psItem.setString(2, b.getString("isbn"));
-                psItem.setString(3, b.getString("title"));
-                psItem.setDouble(4, b.getDouble("price"));
-                psItem.setInt(5, b.getInt("qty"));
-                psItem.setDouble(6, b.getDouble("subtotal"));
+                psItem.setInt(1, invoiceId);           // invoice_id
+                psItem.setString(2, b.getString("title")); // title
+                psItem.setDouble(3, b.getDouble("price")); // price
+                psItem.setInt(4, b.getInt("qty"));        // quantity
+                psItem.setDouble(5, b.getDouble("subtotal")); // subtotal
                 psItem.addBatch();
             }
             psItem.executeBatch();
             conn.commit();
-        } catch(Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         JSONObject res = new JSONObject();
         res.put("invoiceId", invoiceId);
