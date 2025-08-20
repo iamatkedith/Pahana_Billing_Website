@@ -1,127 +1,144 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="../navbar.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Cashier Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <title>Cashier Dashboard | Books POS</title>
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+        * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background:#f5f6fa; margin:0; padding:0; }
+        .dashboard-wrapper { max-width:1200px; margin:auto; padding:40px; }
+        h2 { text-align:center; margin-bottom:40px; }
+
+        /* Info boxes */
+        .info-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:space-around; margin-bottom:40px; }
+        .info-box {
+            flex:1 1 200px;
+            padding:30px 20px;
+            background:linear-gradient(135deg,#4682B4,#0F52BA);
+            color:#fff;
+            border-radius:12px;
+            box-shadow:0 10px 20px rgba(0,0,0,0.1);
+            position:relative;
+            overflow:hidden;
+            cursor:pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .dashboard-title {
-            font-weight: 600;
-            color: #2c3e50;
-            text-align: center;
+        .info-box:hover { transform: translateY(-5px); box-shadow:0 15px 25px rgba(0,0,0,0.2); }
+        .info-box h3 { font-size:32px; margin:0; }
+        .info-box p { font-size:16px; margin:5px 0 0; }
+        .info-icon {
+            position:absolute;
+            top:10px; right:15px;
+            font-size:50px;
+            opacity:0.2;
         }
-        .quick-action-btn {
-            font-size: 18px;
-            font-weight: 500;
-            border-radius: 12px;
-            transition: transform 0.2s;
-            padding: 30px;
+
+        /* Chart */
+        #salesChartWrapper {
+            background:#fff;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 10px 20px rgba(0,0,0,0.1);
         }
-        .quick-action-btn:hover {
-            transform: scale(1.05);
-        }
-        .card-header {
-            font-weight: bold;
-        }
+        canvas { max-width:100%; }
+
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+<div class="dashboard-wrapper">
+    <h2>Cashier Dashboard</h2>
 
-<div class="container mt-4">
-    <h2 class="dashboard-title mb-4">Cashier Dashboard</h2>
-
-    <!-- Quick Actions -->
-    <div class="row mb-4 g-3 text-center">
-        <div class="col-md-3">
-            <a href="billing.jsp" class="btn btn-primary quick-action-btn w-100">🧾 Generate Bill</a>
+    <div class="info-container">
+        <div class="info-box">
+            <h3 id="totalSales">0</h3>
+            <p>Total Sales ($)</p>
+            <div class="info-icon">💰</div>
         </div>
-        <div class="col-md-3">
-            <a href="books.jsp" class="btn btn-success quick-action-btn w-100">📚 Book Management</a>
+        <div class="info-box">
+            <h3 id="totalInvoices">0</h3>
+            <p>Total Invoices</p>
+            <div class="info-icon">🧾</div>
         </div>
-        <div class="col-md-3">
-            <a href="reports.jsp" class="btn btn-warning quick-action-btn w-100">👤 Customer Reports</a>
+        <div class="info-box">
+            <h3 id="booksSold">0</h3>
+            <p>Books Sold</p>
+            <div class="info-icon">📚</div>
         </div>
-        <div class="col-md-3">
-            <a href="stock.jsp" class="btn btn-info quick-action-btn w-100">📦 Stock Details</a>
+        <div class="info-box">
+            <h3 id="lowStockItems">0</h3>
+            <p>Low Stock Items</p>
+            <div class="info-icon">⚠️</div>
         </div>
     </div>
 
-    <!-- Today’s Overview -->
-    <div class="row g-4">
-        <!-- Latest Bills -->
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-dark text-white">Latest Bills</div>
-                <div class="card-body p-0">
-                    <table class="table table-striped mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Bill ID</th>
-                                <th>Customer</th>
-                                <th>Total</th>
-                                <th>Time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="bill" items="${latestBills}">
-                                <tr>
-                                    <td>${bill.id}</td>
-                                    <td>${bill.customer}</td>
-                                    <td>${bill.total}</td>
-                                    <td>${bill.time}</td>
-                                </tr>
-                            </c:forEach>
-                            <c:if test="${empty latestBills}">
-                                <tr>
-                                    <td colspan="4" class="text-center text-muted">No bills found</td>
-                                </tr>
-                            </c:if>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Top Selling Books -->
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-dark text-white">Top Selling Books Today</div>
-                <div class="card-body p-0">
-                    <table class="table table-striped mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Book</th>
-                                <th>Sold</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="book" items="${topBooks}">
-                                <tr>
-                                    <td>${book.name}</td>
-                                    <td>${book.sold}</td>
-                                </tr>
-                            </c:forEach>
-                            <c:if test="${empty topBooks}">
-                                <tr>
-                                    <td colspan="2" class="text-center text-muted">No sales yet</td>
-                                </tr>
-                            </c:if>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div id="salesChartWrapper">
+        <h3 style="text-align:center; margin-bottom:20px;">Sales Last 7 Days</h3>
+        <canvas id="salesChart"></canvas>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+var contextPath = "<%= request.getContextPath() %>";
+
+// Animate counters
+function animateCounter(id, value) {
+    let element = document.getElementById(id);
+    let current = 0;
+    let increment = value / 100; // 100 frames
+    let interval = setInterval(() => {
+        current += increment;
+        if(current >= value){
+            current = value;
+            clearInterval(interval);
+        }
+        element.innerText = Math.floor(current);
+    }, 10); // 10ms per frame
+}
+
+// Load dashboard data
+function loadDashboard() {
+    fetch(contextPath + "/cashier/DashboardServlet")
+    .then(res => res.json())
+    .then(data => {
+        animateCounter("totalSales", data.totalSales);
+        animateCounter("totalInvoices", data.totalInvoices);
+        animateCounter("booksSold", data.booksSold);
+        animateCounter("lowStockItems", data.lowStockItems);
+
+        // Chart
+        const labels = data.dailySales.map(d => d.date);
+        const salesData = data.dailySales.map(d => d.sales);
+
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Daily Sales ($)',
+                    data: salesData,
+                    backgroundColor: 'rgba(70,130,180,0.7)',
+                    borderColor: 'rgba(70,130,180,1)',
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero:true },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    });
+}
+
+// Initial load
+loadDashboard();
+</script>
 </body>
 </html>
