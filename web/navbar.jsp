@@ -186,10 +186,11 @@
 
                 <!-- Links -->
                 <ul class="nav-links">
-                    <li><a href="home.jsp" class="active"><i class="fas fa-home"></i> Home</a></li>
+                   
 
                     <!-- Admin menu -->
                     <c:if test="${sessionScope.role == 'admin'}">
+                        <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
                         <li><a href="books.jsp"><i class="fa-solid fa-book"></i> Books</a></li>
                         <li><a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a></li>
                         <li><a href="cashiers.jsp"><i class="fa-solid fa-user-tie"></i> Cashiers</a></li>
@@ -199,8 +200,9 @@
 
                     <!-- Cashier menu -->
                     <c:if test="${sessionScope.role == 'cashier'}">
+                        <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
                         <li><a href="books.jsp"><i class="fa-solid fa-book"></i> Books</a></li>
-                        <li><a href="cashier/customers.jsp"><i class="fa-solid fa-user-plus"></i> Customers</a></li>
+                        <li><a href="customers.jsp"><i class="fa-solid fa-user-plus"></i> Customers</a></li>
                         <li><a href="billing.jsp"><i class="fa-solid fa-file-invoice-dollar"></i> Generate Bill</a></li>
                         <li><a href="cashier/reports.jsp"><i class="fa-solid fa-chart-pie"></i> Reports</a></li>
                         </c:if>
