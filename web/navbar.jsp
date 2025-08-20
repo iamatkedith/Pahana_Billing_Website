@@ -212,7 +212,7 @@
                         <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
                         <li><a href="bookPurchase.jsp"><i class="fa-solid fa-store"></i> Shop Books</a></li>
                         <li><a href="orders.jsp"><i class="fa-solid fa-bag-shopping"></i> My Orders</a></li>
-                        <li><a href="customer/help.jsp"><i class="fa-solid fa-circle-question"></i> Help</a></li>
+                        <li><a href="help.jsp"><i class="fa-solid fa-circle-question"></i> Help</a></li>
                         </c:if>
                 </ul>
 
