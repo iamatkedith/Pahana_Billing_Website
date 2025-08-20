@@ -201,7 +201,7 @@
                     <c:if test="${sessionScope.role == 'cashier'}">
                         <li><a href="books.jsp"><i class="fa-solid fa-book"></i> Books</a></li>
                         <li><a href="cashier/customers.jsp"><i class="fa-solid fa-user-plus"></i> Customers</a></li>
-                        <li><a href="cashier/generateBill.jsp"><i class="fa-solid fa-file-invoice-dollar"></i> Generate Bill</a></li>
+                        <li><a href="billing.jsp"><i class="fa-solid fa-file-invoice-dollar"></i> Generate Bill</a></li>
                         <li><a href="cashier/reports.jsp"><i class="fa-solid fa-chart-pie"></i> Reports</a></li>
                         </c:if>
 
