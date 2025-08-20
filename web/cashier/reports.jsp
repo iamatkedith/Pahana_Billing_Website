@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Reports | Books POS</title>
+    <title>Reports | Pahana Edu</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background:#f5f6fa; margin:0; padding:0; }

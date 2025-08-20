@@ -205,6 +205,7 @@
                         <li><a href="customers.jsp"><i class="fa-solid fa-user-plus"></i> Customers</a></li>
                         <li><a href="billing.jsp"><i class="fa-solid fa-file-invoice-dollar"></i> Generate Bill</a></li>
                         <li><a href="reports.jsp"><i class="fa-solid fa-chart-pie"></i> Reports</a></li>
+                        <li><a href="cashierHelp.jsp"><i class="fa-solid fa-gear"></i> Help</a></li>
                         </c:if>
 
                     <!-- Customer menu -->
