@@ -6,7 +6,7 @@
     <title>Cashier Dashboard | Pahana Edu</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background:#f5f6fa; margin:0; padding:0; }
+        body {  background: #f2f7fa; margin:0; padding:0; }
         .dashboard-wrapper { max-width:1200px; margin:auto; padding:40px; }
         h2 { text-align:center; margin-bottom:40px; }
 

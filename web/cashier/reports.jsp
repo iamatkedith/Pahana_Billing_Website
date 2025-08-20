@@ -6,7 +6,7 @@
     <title>Reports | Pahana Edu</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background:#f5f6fa; margin:0; padding:0; }
+        body { background: #f2f7fa; margin:0; padding:0; }
         .report-wrapper { padding:40px; max-width:1200px; margin:auto; }
         h2 { text-align:center; margin-bottom:30px; }
         .tabs { display:flex; gap:20px; margin-bottom:20px; cursor:pointer; }

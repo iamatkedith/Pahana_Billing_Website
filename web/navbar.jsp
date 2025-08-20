@@ -195,7 +195,6 @@
                         <li><a href="customers.jsp"><i class="fa-solid fa-users"></i> Customers</a></li>
                         <li><a href="cashiers.jsp"><i class="fa-solid fa-user-tie"></i> Cashiers</a></li>
                         <li><a href="reports.jsp"><i class="fa-solid fa-chart-line"></i> Reports</a></li>
-                        <li><a href="settings.jsp"><i class="fa-solid fa-gear"></i> Settings</a></li>
                         </c:if>
 
                     <!-- Cashier menu -->
@@ -210,7 +209,8 @@
 
                     <!-- Customer menu -->
                     <c:if test="${sessionScope.role == 'customer'}">
-                        <li><a href="customer/shop.jsp"><i class="fa-solid fa-store"></i> Shop Books</a></li>
+                        <li><a href="dashboard.jsp"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="<%= request.getContextPath() %>/customer/AvailableBooksServlet"><i class="fa-solid fa-store"></i> Shop Books</a></li>
                         <li><a href="customer/orders.jsp"><i class="fa-solid fa-bag-shopping"></i> My Orders</a></li>
                         <li><a href="customer/downloadReports.jsp"><i class="fa-solid fa-download"></i> Reports</a></li>
                         <li><a href="customer/help.jsp"><i class="fa-solid fa-circle-question"></i> Help</a></li>

@@ -6,7 +6,7 @@
     <title>Cashier Help | Books POS</title>
     <style>
         * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: #f5f6fa; margin: 0; padding: 0; }
+        body {  background: #f2f7fa; margin: 0; padding: 0; }
         .help-wrapper { max-width: 1000px; margin: auto; padding: 40px; }
         h1 { text-align: center; margin-bottom: 20px; color: #0F52BA; }
         p.subtitle { text-align: center; font-size: 18px; color: #555; margin-bottom: 50px; }
