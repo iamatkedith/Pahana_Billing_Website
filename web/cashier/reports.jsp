@@ -186,7 +186,7 @@ function loadSalesReport(){
     let paymentType = document.getElementById("paymentType").value;
     let month = document.getElementById("salesMonth").value;
 
-    fetch(contextPath + "/cashier/ReportsServlet?type=salesReport&paymentType=" + encodeURIComponent(paymentType) + "&month=" + encodeURIComponent(month))
+    fetch(contextPath + "/admin/ReportsServlet?type=salesReport&paymentType=" + encodeURIComponent(paymentType) + "&month=" + encodeURIComponent(month))
     .then(res=>res.json())
     .then(data=>{
         let tbody = document.querySelector("#salesTable tbody");
