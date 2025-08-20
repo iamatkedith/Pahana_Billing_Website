@@ -183,7 +183,7 @@ function purchaseBooks(){
     })
     .then(res=>res.text())
     .then(data=>{
-        if(data.trim()==="success"){ alert("Purchase successful"); cart=[]; renderCart(); }
+        if(data.trim()==="success"){ alert("Purchased successfully"); cart=[]; renderCart(); }
         else alert(data);
     }).catch(err=>alert("Error: "+err));
 }
