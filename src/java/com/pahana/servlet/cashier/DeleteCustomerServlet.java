@@ -20,25 +20,45 @@ public class DeleteCustomerServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         int id = Integer.parseInt(request.getParameter("id"));
+
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
-            
-            PreparedStatement ps = con.prepareStatement("DELETE FROM customers WHERE id=?");
-            ps.setInt(1, id);
+                    "jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
+            con.setAutoCommit(false);
 
-            int i = ps.executeUpdate();
-            ps.close();
-            con.close();
-
-            if (i > 0) {
-                response.sendRedirect(request.getContextPath() + "/cashier/customers.jsp?success=Customer deleted successfully!");
+            // 1. Get user_id from customers table
+            PreparedStatement psGetUser = con.prepareStatement("SELECT user_id FROM customers WHERE id=?");
+            psGetUser.setInt(1, id);
+            ResultSet rs = psGetUser.executeQuery();
+            int userId = -1;
+            if (rs.next()) {
+                userId = rs.getInt("user_id");
             } else {
-                response.sendRedirect(request.getContextPath() + "/cashier/customers.jsp?error=Failed to delete customer.");
+                con.rollback();
+                response.sendRedirect(request.getContextPath() + "/cashier/customers.jsp?error=Customer not found!");
+                return;
             }
+            rs.close();
+            psGetUser.close();
+
+            // 2. Delete from customers table
+            PreparedStatement psCustomer = con.prepareStatement("DELETE FROM customers WHERE id=?");
+            psCustomer.setInt(1, id);
+            psCustomer.executeUpdate();
+            psCustomer.close();
+
+            // 3. Delete from users table
+            PreparedStatement psUser = con.prepareStatement("DELETE FROM users WHERE id=?");
+            psUser.setInt(1, userId);
+            psUser.executeUpdate();
+            psUser.close();
+
+            con.commit();
+            con.close();
+            response.sendRedirect(request.getContextPath() + "/cashier/customers.jsp?success=Customer deleted successfully!");
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/cashier/customers.jsp?error=An error occurred!");

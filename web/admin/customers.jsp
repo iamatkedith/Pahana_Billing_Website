@@ -102,9 +102,9 @@
         </style>
     </head>
     <body>
-        
+
         <div class="container-main">
-            
+
             <!-- Success / Error Messages -->
             <c:if test="${not empty param.success}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-success">
@@ -140,23 +140,26 @@
                             try {
                                 Class.forName("com.mysql.cj.jdbc.Driver");
                                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/pahana_billing1", "root", "");
-                                PreparedStatement ps = con.prepareStatement("SELECT * FROM customers");
+                                PreparedStatement ps = con.prepareStatement("SELECT c.*, u.username FROM customers c JOIN users u ON c.user_id=u.id");
+
                                 ResultSet rs = ps.executeQuery();
                                 while (rs.next()) {
                         %>
                         <tr>
                             <td><%= rs.getInt("id")%></td>
-                            <td><%= rs.getString("name")%></td>
+                            <td><%= rs.getString("full_name")%></td>
                             <td><%= rs.getString("email")%></td>
                             <td><%= rs.getString("phone")%></td>
+                            
                             <td>
                                 <a href="javascript:void(0);" class="btn-icon btn-edit" 
                                    onclick="openEditCustomerModal(
                                                    '<%=rs.getInt("id")%>',
-                                                   '<%=rs.getString("name")%>',
+                                                   '<%=rs.getString("full_name")%>',
                                                    '<%=rs.getString("email")%>',
                                                    '<%=rs.getString("phone")%>',
-                                                   '<%=rs.getString("address")%>'
+                                                   '<%=rs.getString("address")%>',
+                                                   '<%=rs.getString("username")%>'
                                                    )">
                                     <i class="fas fa-edit"></i>
                                 </a>
@@ -189,10 +192,31 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3">
-                                    <div class="col-md-6"><label class="form-label">Name</label><input type="text" name="name" class="form-control" required></div>
-                                    <div class="col-md-6"><label class="form-label">Email</label><input type="email" name="email" class="form-control" required></div>
-                                    <div class="col-md-6"><label class="form-label">Phone</label><input type="text" name="phone" class="form-control"></div>
-                                    <div class="col-md-6"><label class="form-label">Address</label><input type="text" name="address" class="form-control"></div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" name="full_name" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" name="email" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Phone</label>
+                                        <input type="text" name="phone" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" name="address" class="form-control">
+                                    </div>
+                                    <!-- NEW FIELDS -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" name="username" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" name="password" class="form-control" required>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -216,10 +240,32 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3">
-                                    <div class="col-md-6"><label class="form-label">Name</label><input type="text" name="name" id="editCustomerName" class="form-control" required></div>
-                                    <div class="col-md-6"><label class="form-label">Email</label><input type="email" name="email" id="editCustomerEmail" class="form-control" required></div>
-                                    <div class="col-md-6"><label class="form-label">Phone</label><input type="text" name="phone" id="editCustomerPhone" class="form-control"></div>
-                                    <div class="col-md-6"><label class="form-label">Address</label><input type="text" name="address" id="editCustomerAddress" class="form-control"></div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Full Name</label>
+                                        <input type="text" name="full_name" id="editCustomerName" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" name="email" id="editCustomerEmail" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Phone</label>
+                                        <input type="text" name="phone" id="editCustomerPhone" class="form-control">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" name="address" id="editCustomerAddress" class="form-control">
+                                    </div>
+                                    <!-- NEW FIELDS -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" name="username" id="editCustomerUsername" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Password</label>
+                                        <input type="password" name="password" id="editCustomerPassword" class="form-control">
+                                        <small class="text-muted">Leave blank if you don’t want to change it</small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -240,12 +286,13 @@
                 }
             }
 
-            function openEditCustomerModal(id, name, email, phone, address) {
+            function openEditCustomerModal(id, name, email, phone, address, username) {
                 document.getElementById('editCustomerId').value = id;
                 document.getElementById('editCustomerName').value = name;
                 document.getElementById('editCustomerEmail').value = email;
                 document.getElementById('editCustomerPhone').value = phone;
                 document.getElementById('editCustomerAddress').value = address;
+                document.getElementById('editCustomerUsername').value = username;
 
                 var editModal = new bootstrap.Modal(document.getElementById('editCustomerModal'));
                 editModal.show();

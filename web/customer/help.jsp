@@ -12,7 +12,7 @@
         .pahana-help-container {
             max-width: 900px;
             margin: 70px auto;
-            padding: 15px;
+            padding: 2px;
         }
 
         /* Header */

@@ -198,7 +198,7 @@
                             <td><%= rs.getString("publisher")%></td>
                             <td><%= rs.getInt("year")%></td>
                             <td><%= rs.getString("edition")%></td>
-                            <td>$<%= rs.getDouble("price")%></td>
+                            <td>LKR<%= rs.getDouble("price")%></td>
                             <td><%= rs.getDouble("discount")%>%</td>
                             <td><%= rs.getInt("stock")%></td>
                             <td>
